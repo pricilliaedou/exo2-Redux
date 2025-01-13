@@ -1,0 +1,57 @@
+const BUY_PHONE = "BUY_PHONE";
+const BUY_TABLET = "BUY_TABLET";
+
+function buyPhone() {
+  return {
+    type: BUY_PHONE,
+  };
+}
+
+function buyTablet() {
+  return {
+    type: BUY_TABLET,
+  };
+}
+const initialState = {
+  phones: 5,
+  tablets: 10,
+};
+
+const reducer = (state = initialState, action) => {
+  switch (action.type) {
+    case BUY_PHONE:
+      return {
+        ...state,
+        phones: state.phones - 1,
+      };
+
+    case BUY_TABLET:
+      return {
+        ...state,
+        tablets: state.tablets - 1,
+      };
+
+    default:
+      return state;
+  }
+};
+
+const store = Redux.createStore(reducer);
+
+const availablePhones = document.getElementById("count");
+const availableTablets = document.getElementById("count-tab");
+
+availablePhones.innerHTML = store.getState().phones;
+availableTablets.innerHTML = store.getState().tablets;
+
+document.getElementById("buy-phone").addEventListener("click", function () {
+  store.dispatch(buyPhone());
+});
+document.getElementById("buy-tablet").addEventListener("click", function () {
+  store.dispatch(buyTablet());
+});
+
+store.subscribe(() => {
+  availablePhones.innerHTML = store.getState().phones;
+  availableTablets.innerHTML = store.getState().tablets;
+});
